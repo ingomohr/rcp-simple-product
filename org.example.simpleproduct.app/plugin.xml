@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            cardinality="singleton-global"
+            thread="main"
+            visible="true">
+         <run
+               class="org.example.simpleproduct.app.Application">
+         </run>
+      </application>
+   </extension>
+
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.example.simpleproduct.app.application"
+            name="Simple Product"
+            description="A simple Eclipse RCP application">
+         <property
+               name="appName"
+               value="Simple Product">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/icon16.png,icons/icon32.png,icons/icon64.png,icons/icon128.png,icons/icon256.png">
+         </property>
+      </product>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.example.simpleproduct.app.Perspective"
+            id="org.example.simpleproduct.app.perspective"
+            name="Simple Product">
+      </perspective>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="org.example.simpleproduct.app.HelloView"
+            id="org.example.simpleproduct.app.helloView"
+            name="Hello">
+      </view>
+   </extension>
+
+</plugin>

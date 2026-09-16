@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="Simple Product" uid="org.example.simpleproduct.product" id="org.example.simpleproduct.app.product" application="org.example.simpleproduct.app.application" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgs>-Xms64m
+-Xmx768m
+      </vmArgs>
+   </launcherArgs>
+
+   <launcher name="SimpleProduct">
+      <macosx icon="icons/SimpleProduct.icns"/>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <license>
+   </license>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="org.example.simpleproduct.feature" version="0.0.0"/>
+      <!--
+        Bundles a full Java 25 (LTS) JRE into the product's launcher, fetched via p2/Maven
+        from the JustJ project's update site (see the "justj-jre25" repository in the parent pom).
+        Use ".minimal.stripped" instead if a smaller footprint is preferred over full JDK module coverage.
+      -->
+      <feature id="org.eclipse.justj.openjdk.hotspot.jre.full.stripped" installMode="root"/>
+   </features>
+
+   <configurations>
+      <!--
+        These bundles must be marked to auto-start explicitly (":start" in config.ini's
+        osgi.bundles), otherwise nothing ever activates org.eclipse.equinox.app and the
+        launcher fails with "Unable to acquire application service". Only bundles that are
+        actually part of the resolved install set are listed here (no simpleconfigurator,
+        since we don't include the feature that would provide it).
+      -->
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.app" autoStart="true" startLevel="4" />
+      <property name="osgi.bundles.defaultStartLevel" value="4" />
+      <property name="osgi.instance.area.default" value="@user.home/simpleproduct-workspace" />
+   </configurations>
+
+</product>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.example.simpleproduct</groupId>
+    <artifactId>org.example.simpleproduct.parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>org.example.simpleproduct.product</artifactId>
+  <packaging>eclipse-repository</packaging>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-director-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <executions>
+          <execution>
+            <id>materialize-products</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>materialize-products</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>archive-products</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>archive-products</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--
+        Tycho's p2 director always materializes the macOS app bundle as "Eclipse.app"
+        (Info.plist, the launcher executable and the icon are already correctly named
+        "SimpleProduct" though). Rename the bundle folder itself before archiving so the
+        shipped product is "SimpleProduct.app".
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>rename-macos-app-bundle</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <move todir="${project.build.directory}/products/${project.artifactId}/macosx/cocoa/aarch64/SimpleProduct.app" failonerror="false">
+                  <fileset dir="${project.build.directory}/products/${project.artifactId}/macosx/cocoa/aarch64/Eclipse.app"/>
+                </move>
+                <move todir="${project.build.directory}/products/${project.artifactId}/macosx/cocoa/x86_64/SimpleProduct.app" failonerror="false">
+                  <fileset dir="${project.build.directory}/products/${project.artifactId}/macosx/cocoa/x86_64/Eclipse.app"/>
+                </move>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

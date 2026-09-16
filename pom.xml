@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.example.simpleproduct</groupId>
+  <artifactId>org.example.simpleproduct.parent</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <tycho-version>5.0.4</tycho-version>
+    <!-- Eclipse simultaneous release used as target platform -->
+    <eclipse-release-repo.url>https://download.eclipse.org/releases/2026-09</eclipse-release-repo.url>
+    <!-- JustJ JRE 25 (LTS) p2 repository, used to bundle a full JRE 25 into the product launcher -->
+    <justj-jre25-repo.url>https://download.eclipse.org/justj/jres/25/updates/release/25.0.4.v20260826-0822</justj-jre25-repo.url>
+  </properties>
+
+  <modules>
+    <module>org.example.simpleproduct.app</module>
+    <module>org.example.simpleproduct.feature</module>
+    <module>org.example.simpleproduct.updatesite</module>
+    <module>org.example.simpleproduct.product</module>
+  </modules>
+
+  <repositories>
+    <repository>
+      <id>eclipse-2026-09</id>
+      <layout>p2</layout>
+      <url>${eclipse-release-repo.url}</url>
+    </repository>
+    <repository>
+      <id>justj-jre25</id>
+      <layout>p2</layout>
+      <url>${justj-jre25-repo.url}</url>
+    </repository>
+  </repositories>
+
+  <build>
+    <plugins>
+      <!-- enables packaging types eclipse-plugin, eclipse-feature, eclipse-repository, ... -->
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <extensions>true</extensions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <environments>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>aarch64</arch>
+            </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>x86_64</arch>
+            </environment>
+          </environments>
+          <!-- required so p2 actually materializes (unpacks) the JustJ JRE at build time -->
+          <dependency-resolution>
+            <profileProperties>
+              <org.eclipse.justj.buildtime>true</org.eclipse.justj.buildtime>
+            </profileProperties>
+          </dependency-resolution>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-compiler-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <release>21</release>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

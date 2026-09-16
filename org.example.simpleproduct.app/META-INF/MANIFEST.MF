@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Simple Product Application
+Bundle-SymbolicName: org.example.simpleproduct.app;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.example.simpleproduct.app.Activator
+Bundle-Vendor: Example
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: org.example.simpleproduct.app
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.equinox.app
